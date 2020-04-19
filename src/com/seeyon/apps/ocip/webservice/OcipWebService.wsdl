@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ocipWebService" targetNamespace="http://ocip.seeyon.com/exchange/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ocip.seeyon.com/exchange/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xmime="http://www.w3.org/2005/05/xmlmime" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://ocip.seeyon.com/exchange/model/" version="1.0">
+
+  <xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
+  <xs:complexType name="MessagePackageFile">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="dataHandler" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:ns1="http://ocip.seeyon.com/exchange/model/" xmlns:tns="http://ocip.seeyon.com/exchange/" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://ocip.seeyon.com/exchange/">
+  <xs:import namespace="http://ocip.seeyon.com/exchange/model/"/>
+  <xs:element name="getJsonDataStr" type="tns:getJsonDataStr"/>
+  <xs:element name="getJsonDataStrResponse" type="tns:getJsonDataStrResponse"/>
+  <xs:element name="reqWebService" type="tns:reqWebService"/>
+  <xs:element name="reqWebServiceResponse" type="tns:reqWebServiceResponse"/>
+  <xs:element name="sendBaseXMLEsbWebService" type="tns:sendBaseXMLEsbWebService"/>
+  <xs:element name="sendBaseXMLEsbWebServiceResponse" type="tns:sendBaseXMLEsbWebServiceResponse"/>
+  <xs:element name="sendBaseXMLEsbWebServiceV2" type="tns:sendBaseXMLEsbWebServiceV2"/>
+  <xs:element name="sendBaseXMLEsbWebServiceV2Response" type="tns:sendBaseXMLEsbWebServiceV2Response"/>
+  <xs:complexType name="reqWebService">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg3" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="reqWebServiceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getJsonDataStr">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="getJsonDataStrResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendBaseXMLEsbWebService">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendBaseXMLEsbWebServiceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendBaseXMLEsbWebServiceV2">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg1" type="ns1:MessagePackageFile"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="sendBaseXMLEsbWebServiceV2Response">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Exception" type="tns:Exception"/>
+  <xs:complexType name="Exception">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="sendBaseXMLEsbWebServiceV2Response">
+    <wsdl:part name="parameters" element="tns:sendBaseXMLEsbWebServiceV2Response">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sendBaseXMLEsbWebServiceV2">
+    <wsdl:part name="parameters" element="tns:sendBaseXMLEsbWebServiceV2">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reqWebService">
+    <wsdl:part name="parameters" element="tns:reqWebService">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getJsonDataStr">
+    <wsdl:part name="parameters" element="tns:getJsonDataStr">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getJsonDataStrResponse">
+    <wsdl:part name="parameters" element="tns:getJsonDataStrResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sendBaseXMLEsbWebService">
+    <wsdl:part name="parameters" element="tns:sendBaseXMLEsbWebService">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reqWebServiceResponse">
+    <wsdl:part name="parameters" element="tns:reqWebServiceResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="Exception">
+    <wsdl:part name="Exception" element="tns:Exception">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="sendBaseXMLEsbWebServiceResponse">
+    <wsdl:part name="parameters" element="tns:sendBaseXMLEsbWebServiceResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ocipWebService">
+    <wsdl:operation name="reqWebService">
+      <wsdl:input name="reqWebService" message="tns:reqWebService">
+    </wsdl:input>
+      <wsdl:output name="reqWebServiceResponse" message="tns:reqWebServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getJsonDataStr">
+      <wsdl:input name="getJsonDataStr" message="tns:getJsonDataStr">
+    </wsdl:input>
+      <wsdl:output name="getJsonDataStrResponse" message="tns:getJsonDataStrResponse">
+    </wsdl:output>
+      <wsdl:fault name="Exception" message="tns:Exception">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sendBaseXMLEsbWebService">
+      <wsdl:input name="sendBaseXMLEsbWebService" message="tns:sendBaseXMLEsbWebService">
+    </wsdl:input>
+      <wsdl:output name="sendBaseXMLEsbWebServiceResponse" message="tns:sendBaseXMLEsbWebServiceResponse">
+    </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendBaseXMLEsbWebServiceV2">
+      <wsdl:input name="sendBaseXMLEsbWebServiceV2" message="tns:sendBaseXMLEsbWebServiceV2">
+    </wsdl:input>
+      <wsdl:output name="sendBaseXMLEsbWebServiceV2Response" message="tns:sendBaseXMLEsbWebServiceV2Response">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ocipWebServiceSoapBinding" type="tns:ocipWebService">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="reqWebService">
+      <soap:operation soapAction="urn:reqWebService" style="document"/>
+      <wsdl:input name="reqWebService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="reqWebServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getJsonDataStr">
+      <soap:operation soapAction="urn:getJsonDataStr" style="document"/>
+      <wsdl:input name="getJsonDataStr">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getJsonDataStrResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="Exception">
+        <soap:fault name="Exception" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="sendBaseXMLEsbWebService">
+      <soap:operation soapAction="urn:sendBaseXMLEsbWebService" style="document"/>
+      <wsdl:input name="sendBaseXMLEsbWebService">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sendBaseXMLEsbWebServiceResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sendBaseXMLEsbWebServiceV2">
+      <soap:operation soapAction="urn:sendBaseXMLEsbWebServiceV2" style="document"/>
+      <wsdl:input name="sendBaseXMLEsbWebServiceV2">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="sendBaseXMLEsbWebServiceV2Response">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ocipWebService">
+    <wsdl:port name="ocipWebServicePort" binding="tns:ocipWebServiceSoapBinding">
+      <soap:address location="http://127.0.0.1:8080/seeyon/services/ocipWebService"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

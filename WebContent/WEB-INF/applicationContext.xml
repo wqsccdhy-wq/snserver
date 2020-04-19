@@ -1,0 +1,100 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	   xmlns:ws="http://jax-ws.dev.java.net/spring/core"
+	   xmlns:wss="http://jax-ws.dev.java.net/spring/servlet" 
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						http://jax-ws.dev.java.net/spring/core
+						http://jax-ws.dev.java.net/spring/core.xsd
+						http://jax-ws.dev.java.net/spring/servlet
+						http://jax-ws.dev.java.net/spring/servlet.xsd
+						http://www.springframework.org/schema/context  
+						http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+    
+   	
+	<bean id="ocipExchangeHandler" class="com.seeyon.ocip.exchange.handler.OcipExchangeHandler" init-method="initService" />
+
+	<!-- <bean id="edocExchangeService" class="com.seeyon.oa.exchange.EdocExchangeService"/> -->
+	
+	
+	 <bean id="ocipWebService" class="com.seeyon.apps.ocip.webservice.impl.OcipWebServiceImpl"/>
+	 
+	 <wss:binding url="/services/ocipWebService">
+		<wss:service>
+			<ws:service bean="#ocipWebService" />
+		</wss:service>
+	</wss:binding> 
+	 
+	
+		
+	<bean id="multiThreadedHttpConnectionManager"
+		class="org.apache.commons.httpclient.MultiThreadedHttpConnectionManager">
+		<property name="params">
+			<bean
+				class="org.apache.commons.httpclient.params.HttpConnectionManagerParams">
+				<property name="maxTotalConnections" value="200" />
+				<property name="defaultMaxConnectionsPerHost" value="20" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="httpInvokerRequestExecutor"
+		class="org.springframework.remoting.httpinvoker.CommonsHttpInvokerRequestExecutor">
+		<property name="httpClient">
+			<bean class="org.apache.commons.httpclient.HttpClient">
+				<property name="connectionTimeout" value="2000" />
+				<property name="timeout" value="10000" />
+				<property name="httpConnectionManager">
+					<ref bean="multiThreadedHttpConnectionManager" />
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- ocip在线检测 -->
+	<bean id="ocipOnlineChecker"
+		class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<!-- 代理地址 ，改地址需要致远提供-->
+		<property name="serviceUrl"
+			value="http://127.0.0.1:8085/ServerAgent/onlineChecker.service" />
+		<property name="serviceInterface" value="com.seeyon.ocip.common.online.IOnlineChecker" />
+		<property name="httpInvokerRequestExecutor" ref="httpInvokerRequestExecutor" />
+	</bean>
+	
+	<!-- 初始话OCIP接口的调用 -->
+	<bean id="organizationManager"
+		class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<!-- 代理地址 ，改地址需要致远提供-->
+		<property name="serviceUrl"
+			value="http://127.0.0.1:8085/ServerAgent/organizationManager.service" />
+		<property name="serviceInterface"
+			value="com.seeyon.ocip.common.organization.IOrganizationManager" />
+		<property name="httpInvokerRequestExecutor" ref="httpInvokerRequestExecutor" />
+	</bean>
+	
+	<bean id="viewManager"
+		class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+		<property name="serviceUrl"
+			value="http://127.0.0.1:8085/ServerAgent/viewManager.service" />
+		<property name="serviceInterface" value="com.seeyon.ocip.common.view.IViewManager" />
+		<property name="httpInvokerRequestExecutor" ref="httpInvokerRequestExecutor" />
+	</bean>
+	
+	<bean id="govdocPush" class="ocipexchangedemo.GovdocPushImpl">
+		<property name="wsdlUrl" value="http://192.168.205.16:80/general/lgt/getNewWorkFlow.service.php?wsdl"></property>
+		<property name="method" value="newWorkFlow"></property>
+	</bean>
+	
+	<!-- 公文交换组件初始化 -->
+	<bean id="edocOFCExchangeHandler" class="ocipexchangedemo.EdocOFCExchangeHandler">
+		<property name="organizationManager" ref="organizationManager"></property>
+		<property name="govdocPush" ref="govdocPush"></property>
+	</bean>
+	
+	<!-- 公文回执组件初始化，公文签收、回退、撤销动作 -->
+	<bean id="edocRETExchangeHandler" class="ocipexchangedemo.EdocRETExchangeHandler">
+		<property name="organizationManager" ref="organizationManager"></property>
+	</bean>
+	
+</beans>
