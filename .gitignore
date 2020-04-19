@@ -17,7 +17,7 @@
 /gen/
 /out/
 /.settings/
-/classes/
+classes/
 
 # Gradle files
 .gradle/
