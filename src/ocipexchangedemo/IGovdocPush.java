@@ -1,7 +1,7 @@
 package ocipexchangedemo;
 
 /**
- * 调用第三方接口定义
+ * 调用第三方接口定义说明
  *
  */
 import ocipexchangedemo.bo.GovdocInfo;
