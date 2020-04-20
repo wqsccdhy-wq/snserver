@@ -7,7 +7,10 @@ package ocipexchangedemo;
 import ocipexchangedemo.bo.GovdocInfo;
 
 public interface IGovdocPush {
-	
+	/**
+	 * 
+	 * @param info
+	 */
 	public void push(GovdocInfo info);
 
 }
