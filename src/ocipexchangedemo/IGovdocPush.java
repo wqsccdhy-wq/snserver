@@ -8,7 +8,7 @@ import ocipexchangedemo.bo.GovdocInfo;
 
 public interface IGovdocPush {
 	/**
-	 * 
+	 * 推送数据
 	 * @param info
 	 */
 	public void push(GovdocInfo info);
