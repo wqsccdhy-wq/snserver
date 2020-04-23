@@ -394,7 +394,9 @@ public class EdocOFCExchangeHandler implements IBussinessHandler {
 		if (summaryIdObj != null) {
 			colSummaryId = String.valueOf(summaryIdObj);
 		}else {
-			LogUtils.info(EdocOFCExchangeHandler.class, "传递的summaryId为空，自动生成ID,ID=" + colSummaryId + ",zy签收时无法返回结果给TD");
+			String info = "传递的summaryId为空，自动生成ID,ID=" + colSummaryId + ",zy签收时无法返回结果给TD";
+			System.out.println("summaryId:" + info);
+			LogUtils.info(EdocOFCExchangeHandler.class, info);
 		}
 		
 		String groupId = colSummaryId;
