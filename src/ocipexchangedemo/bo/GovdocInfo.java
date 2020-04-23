@@ -3,9 +3,21 @@ package ocipexchangedemo.bo;
 import java.util.List;
 
 public class GovdocInfo {
+	
+	/**
+	 * 公文ID
+	 */
+	private String groupId;
 
 	private String unitName;
+	
+	private String detailId;
+	
+	private String exchNo;
 
+	/**
+	 * 公文标题
+	 */
 	private String title;
 
 	private String createTime;
@@ -92,6 +104,30 @@ public class GovdocInfo {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	public String getDetailId() {
+		return detailId;
+	}
+
+	public void setDetailId(String detailId) {
+		this.detailId = detailId;
+	}
+
+	public String getExchNo() {
+		return exchNo;
+	}
+
+	public void setExchNo(String exchNo) {
+		this.exchNo = exchNo;
 	}
 	
 	

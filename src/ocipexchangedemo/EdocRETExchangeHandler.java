@@ -3,11 +3,8 @@ package ocipexchangedemo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.UUID;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.seeyon.oa.exchange.OCIPServicesServlet;
 import com.seeyon.ocip.common.IConstant;
 import com.seeyon.ocip.common.IConstant.AddressType;
@@ -16,7 +13,6 @@ import com.seeyon.ocip.common.license.OcipKeyMananger;
 import com.seeyon.ocip.common.org.OcipOrgMember;
 import com.seeyon.ocip.common.org.OcipOrgRelation;
 import com.seeyon.ocip.common.org.OcipOrgUnit;
-import com.seeyon.ocip.common.org.OrgMember;
 import com.seeyon.ocip.common.organization.IOrganizationManager;
 import com.seeyon.ocip.exchange.api.IBussinessHandler;
 import com.seeyon.ocip.exchange.exceptions.BussinessException;
@@ -238,37 +234,37 @@ public class EdocRETExchangeHandler implements IBussinessHandler{
 		Address recAdd = new Address();
 		recAdd.setResource("0");
 		//recUnitId
-		String recAccountId = "";
-		String recOrgName = "";//接收单位名称 
+//		String recAccountId = "";
+//		String recOrgName = "";//接收单位名称 
 		// 撤销
-		if (edocOperation == EdocOperation.REVOKED) {
-			String accountId = OCIPServicesServlet.recOrgLocalId;//接单位本地单位ID
-			//将接收单位的本地ID转换为OCIP对应的单位ID
-			OcipOrgUnit account = organizationManager.getAccount(accountId);//OCIP单位实体
-			recAccountId = account.getId();
-			recOrgName = account.getName();//接收单位名称
-		}else {
-			/**
-			 * 注意：实际开发中，recAccountId和recOrgName，应该从数据库中获取，
-			 * demo为了方便用的map保存
-			 */
-			Map<String, String> recUnitMap = EdocOFCExchangeHandler.getRecUnitMap();
-			for (Entry<String, String> entyr : recUnitMap.entrySet()) {
-				recAccountId = entyr.getKey();
-				recOrgName = entyr.getValue();
-			}
-		}
+//		if (edocOperation == EdocOperation.REVOKED) {
+//			String accountId = OCIPServicesServlet.recOrgLocalId;//接单位本地单位ID
+//			//将接收单位的本地ID转换为OCIP对应的单位ID
+//			OcipOrgUnit account = organizationManager.getAccount(accountId);//OCIP单位实体
+//			recAccountId = account.getId();
+//			recOrgName = account.getName();//接收单位名称
+//		}else {
+//			/**
+//			 * 注意：实际开发中，recAccountId和recOrgName，应该从数据库中获取，
+//			 * demo为了方便用的map保存
+//			 */
+//			Map<String, String> recUnitMap = EdocOFCExchangeHandler.getRecUnitMap();
+//			for (Entry<String, String> entyr : recUnitMap.entrySet()) {
+//				recAccountId = entyr.getKey();
+//				recOrgName = entyr.getValue();
+//			}
+//		}
 		
-		recAdd.setId(recAccountId);//接单位对应的OCIP单位ID
+		recAdd.setId(OCIPServicesServlet.recOrgLocalId);//接单位对应的OCIP单位ID
 		
 		/**
 		 * 注意：recOrgName的值不能为空，否则OCIP反序列化会失败
 		 * 
 		 */
-		recAdd.setName(recOrgName);
+		recAdd.setName(OCIPServicesServlet.recOrgName);
 		recAdd.setType("account");
 		reciverOrg.setIdentification(recAdd);
-		reciverOrg.setName(recOrgName);
+		reciverOrg.setName(OCIPServicesServlet.recOrgName);
 		receivers.add(reciverOrg);
 		
 		//公文回执发送方

@@ -1,5 +1,7 @@
 package ocipexchangedemo;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -11,8 +13,15 @@ import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.seeyon.oa.exchange.OCIPServicesServlet;
 import com.seeyon.ocip.common.utils.LogUtils;
+import com.seeyon.ocip.configuration.OcipConfiguration;
+import com.seeyon.ocip.exchange.api.IBussinessService;
+import com.seeyon.ocip.exchange.exceptions.ExchangeException;
+import com.seeyon.ocip.exchange.model.BIZContentType;
+import com.seeyon.ocip.exchange.model.edoc.EdocOperation;
 
 import ocipexchangedemo.bo.GovdocInfo;
 
@@ -45,6 +54,31 @@ public class GovdocPushImpl implements IGovdocPush {
 					String result = axis2RPCInvoke(wsdlUrl, method, param, namespaceUrl, opReturnType);
 					System.out.println(result);
 					LogUtils.info(GovdocPushImpl.class, "推送数据到通达结果 ：" + result);
+					try {
+						Map<String, String> params = JSONObject.parseObject(result, new TypeReference<Map<String, String>>() {
+						});
+						String flag = params.get("flag");
+						if ("0".equals(flag)) {
+							//TODO 根据返回结果，调用OCIP签收接口
+							String groupId = params.get("groupId");
+							String title = params.get("subject");
+							String detailId = params.get("detailId");
+							String exchNo = params.get("exchNo");
+							Map<String, Object> paramMap = new HashMap<String, Object>();
+							paramMap.put("groupId", groupId);
+							paramMap.put("subject", title);
+							paramMap.put("detailId", detailId);
+							paramMap.put("exchNo", exchNo);
+							paramMap.put("exchangeStatus", "0");
+							//paramMap.put("comment", comment);
+							paramMap.put("name", OCIPServicesServlet.sendMemName);//公文签收人员名称
+							paramMap.put("id", OCIPServicesServlet.sendMemLocalId);//公文签收人员本地ID
+							paramMap.put("edocOperation",  EdocOperation.ACCEPTED);
+							getBussinessService().fireExchange(BIZContentType.RET, paramMap);
+						}
+					} catch (ExchangeException e) {
+						LogUtils.error(GovdocPushImpl.class, "签收公文异常", e);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					LogUtils.info(GovdocPushImpl.class, "推送数据到通达异常", e);
@@ -106,6 +140,9 @@ public class GovdocPushImpl implements IGovdocPush {
 		this.method = method;
 	}
 	
+	private IBussinessService getBussinessService() {
+		return OcipConfiguration.getInstance().getExchangeSpi().getBussinessService();
+	}
 	
 
 }

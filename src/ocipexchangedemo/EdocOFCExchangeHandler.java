@@ -268,14 +268,15 @@ public class EdocOFCExchangeHandler implements IBussinessHandler {
 				// String contentMimeType =
 				// ofcEdocObject.getContentMimeType();// 正文格式
 
+				Long myDetail = 0l;
 				for (Entry<Long, Long> entry : myDetailMap.entrySet()) {
 					Long accountId = entry.getKey();
-					Long myDetail = entry.getValue();
+					myDetail = entry.getValue();
 					System.out.println("单位id为：" + accountId + "的单位接收到公文:" + subject + " 公文ID为:" + groupId + " myDetail:"
 							+ myDetail + " exchNo:" + exchNo);
 				}
 
-				//
+				//调用通达公文接口
 				GovdocInfo info = new GovdocInfo();
 				info.setUnitName(accountName);
 				info.setTitle(subject);
@@ -286,6 +287,9 @@ public class EdocOFCExchangeHandler implements IBussinessHandler {
 				info.setUrgentLevel(seeyonEdoc.getUrgentLevel());
 				info.setCopies(seeyonEdoc.getCopies());
 				info.setPhone(seeyonEdoc.getPhone());
+				info.setGroupId(groupId);
+				info.setDetailId(String.valueOf(myDetail));
+				info.setExchNo(exchNo);
 				govdocPush.push(info);
 //				String jsonString = JSONObject.toJSONString(info, SerializerFeature.WriteMapNullValue);
 //				LogUtils.info(EdocOFCExchangeHandler.class, "jsonString:" + jsonString);
@@ -382,9 +386,17 @@ public class EdocOFCExchangeHandler implements IBussinessHandler {
 		HashMap<Long, Long> orgIdAndDetailId = new HashMap<Long, Long>();
 
 		// TODO 需要传递公文的ID
+		//summaryId
 		// 公文id
 		int intFlag = (int) (Math.random() * 1000000);
 		String colSummaryId = String.valueOf(intFlag);
+		Object summaryIdObj = map.get("summaryId");
+		if (summaryIdObj != null) {
+			colSummaryId = String.valueOf(summaryIdObj);
+		}else {
+			LogUtils.info(EdocOFCExchangeHandler.class, "传递的summaryId为空，自动生成ID,ID=" + colSummaryId + ",zy签收时无法返回结果给TD");
+		}
+		
 		String groupId = colSummaryId;
 		bizData.setGroupId(groupId);// groupId的值设置为公文ID
 
