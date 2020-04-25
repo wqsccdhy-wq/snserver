@@ -19,7 +19,11 @@ import com.seeyon.ocip.configuration.OcipConfiguration;
 import com.seeyon.ocip.exchange.api.IBussinessHandler;
 import com.seeyon.ocip.online.OnlineChecker;
 import com.seeyon.ocip.spi.exchange.gbt33479.GB_T33479ExchangeSpi;
-
+/**
+ * 监听
+ * @author WQ-Y7000
+ *
+ */
 public class ServletListener implements ServletContextListener {
 
 	public static String FILE_PATH = "";
