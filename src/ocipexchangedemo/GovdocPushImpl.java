@@ -30,6 +30,10 @@ public class GovdocPushImpl implements IGovdocPush {
 	private String wsdlUrl;
 	
 	private String method;
+	
+	private String signWsdlUrl;
+	
+	private String signMethod;
 
 	@Override
 	public void push(GovdocInfo info) {
@@ -44,8 +48,10 @@ public class GovdocPushImpl implements IGovdocPush {
 					//String wsdlUrl = "http://10.194.96.112:12399/general/lgt/getNewWorkFlow.service.php?wsdl";// webservice地址
 					//String method = "newWorkFlow"; // 调用的那个方法
 					String jsonString = JSONObject.toJSONString(info, SerializerFeature.WriteMapNullValue);
-					LogUtils.info(GovdocPushImpl.class, "GovdocPushImpl--->>jsonString：" + jsonString);
-					LogUtils.info(GovdocPushImpl.class, "GovdocPushImpl--->>wsdlUrl：" + wsdlUrl + "|method:" + method);
+					StringBuffer info = new StringBuffer();
+					info.append("GovdocPushImpl--->>jsonString：" + jsonString);
+					info.append("|wsdlUrl：" + wsdlUrl + "|method:" + method);
+					LogUtils.info(GovdocPushImpl.class, info.toString());
 					Object[] param = new Object[] { jsonString, "1" };// 传递的参数值
 					// String namespaceUrl1 =
 					// "http://service.digitalproduct.tkbs.com";// 命名空间
@@ -120,6 +126,16 @@ public class GovdocPushImpl implements IGovdocPush {
 		} catch (AxisFault e) {
 			e.printStackTrace();
 			LogUtils.error(GovdocPushImpl.class, "调用推送数据到通达异常", e);
+		}finally{
+			if(serviceClient != null){
+				try {
+					serviceClient.cleanupTransport();
+					serviceClient = null;
+				} catch (AxisFault e) {
+					serviceClient = null;
+					//e.printStackTrace();
+				}
+			}
 		}
 		return ((String[]) ret[0])[0];
 	}
@@ -143,6 +159,53 @@ public class GovdocPushImpl implements IGovdocPush {
 	private IBussinessService getBussinessService() {
 		return OcipConfiguration.getInstance().getExchangeSpi().getBussinessService();
 	}
+
+	@Override
+	public void signEdoc(String summaryId, String staus) {
+		ExecutorService threadPool = Executors.newCachedThreadPool();
+		
+		threadPool.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					StringBuffer bufferInfo = new StringBuffer();
+					bufferInfo.append("GovdocPushImpl推送签收状态--->>summaryId：" + summaryId + "|staus:" + staus);
+					bufferInfo.append("|signWsdlUrl：" + signWsdlUrl + "|signMethod:" + signMethod);
+					LogUtils.info(GovdocPushImpl.class, bufferInfo.toString());
+					Object[] param = new Object[] { summaryId, staus };// 传递的参数值
+					String namespaceUrl = "";// 命名空间
+					Class[] opReturnType = new Class[] { String[].class };// 返回值类型
+					String result = axis2RPCInvoke(signWsdlUrl, signMethod, param, namespaceUrl, opReturnType);
+					System.out.println(result);
+					LogUtils.info(GovdocPushImpl.class, "推送签收数据结果 ：" + result);
+				} catch (Exception e) {
+					LogUtils.error(GovdocPushImpl.class, "推送签收数据异常summaryId:" + summaryId, e);
+				}
+
+			}
+		});
+
+		threadPool.shutdown();
+	}
+
+	public String getSignWsdlUrl() {
+		return signWsdlUrl;
+	}
+
+	public void setSignWsdlUrl(String signWsdlUrl) {
+		this.signWsdlUrl = signWsdlUrl;
+	}
+
+	public String getSignMethod() {
+		return signMethod;
+	}
+
+	public void setSignMethod(String signMethod) {
+		this.signMethod = signMethod;
+	}
+	
+	
 	
 
 }

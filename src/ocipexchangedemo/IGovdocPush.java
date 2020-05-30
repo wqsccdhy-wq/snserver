@@ -12,5 +12,12 @@ public interface IGovdocPush {
 	 * @param info
 	 */
 	public void push(GovdocInfo info);
+	
+	/**
+	 * 签收公文
+	 * @param summaryId
+	 * @param staus
+	 */
+	public void signEdoc(String summaryId,String staus);
 
 }

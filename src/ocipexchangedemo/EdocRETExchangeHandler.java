@@ -31,6 +31,8 @@ import com.seeyon.ocip.exchange.model.edoc.RETEdocObject;
 public class EdocRETExchangeHandler implements IBussinessHandler{
 	
 	private IOrganizationManager organizationManager;
+	
+	private IGovdocPush govdocPush;
 
 	@Override
 	public List<BussinessResult> exchangeReceive(BIZExchangeData in) throws BussinessException {
@@ -86,15 +88,17 @@ public class EdocRETExchangeHandler implements IBussinessHandler{
 					/*OrgMember localMember = organizationManager.getLocalMember(id);
 					String orgPlatformUserId = localMember.getOrgPlatformUserId();
 					OcipOrgMember member = organizationManager.getMember(orgPlatformUserId);*/
-					OcipOrgMember member = organizationManager.getMember(creater.getId(), creater.getResource());
-					List<OcipOrgRelation> condition = member.getRelations();
-					if (condition != null && !condition.isEmpty()) {
-						OcipOrgRelation ocipOrgRelation = condition.get(0);
-						String unitId = ocipOrgRelation.getUnitId();
-						OcipOrgUnit account = organizationManager.getAccount(unitId);
-						String unitName = account.getName();
-					}
+//					OcipOrgMember member = organizationManager.getMember(creater.getId(), creater.getResource());
+//					List<OcipOrgRelation> condition = member.getRelations();
+//					if (condition != null && !condition.isEmpty()) {
+//						OcipOrgRelation ocipOrgRelation = condition.get(0);
+//						String unitId = ocipOrgRelation.getUnitId();
+//						OcipOrgUnit account = organizationManager.getAccount(unitId);
+//						String unitName = account.getName();
+//					}
 					System.out.println("对方系统签收了公文,公文ID为：" + groupId + " detailId为:" + detailId + " 签收人为:" + name + " 人员ID:" + id + " 签收回复:" + opinion);
+					//TODO 调用通达签收接口
+					govdocPush.signEdoc(groupId, "2");
 				}else if (operation.equals(EdocOperation.STEPBACK)) {
 					String opinion = retEdocObject.getOpinion();
 					System.out.println("对方系统回退了公文,公文ID为：" + groupId + " detailId为:" + detailId +" 回退人为:" + name + " 人员ID:" + id + " 回退原因:" + opinion);
@@ -300,4 +304,13 @@ public class EdocRETExchangeHandler implements IBussinessHandler{
 		this.organizationManager = organizationManager;
 	}
 
+	public IGovdocPush getGovdocPush() {
+		return govdocPush;
+	}
+
+	public void setGovdocPush(IGovdocPush govdocPush) {
+		this.govdocPush = govdocPush;
+	}
+
+	
 }

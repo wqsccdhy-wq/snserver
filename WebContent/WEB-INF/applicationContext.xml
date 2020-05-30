@@ -84,6 +84,8 @@
 	<bean id="govdocPush" class="ocipexchangedemo.GovdocPushImpl">
 		<property name="wsdlUrl" value="http://192.168.205.16:80/general/lgt/getNewWorkFlow.service.php?wsdl"></property>
 		<property name="method" value="newWorkFlow"></property>
+		<property name="signWsdlUrl" value="http://192.168.205.16:80/general/lgt/updateWorkFlowStaus.service.php?wsdl"></property>
+		<property name="signMethod" value="updateWorkFlowStaus"></property>
 	</bean>
 	
 	<!-- 公文交换组件初始化 -->
