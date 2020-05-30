@@ -67,7 +67,7 @@ public class GovdocPushImpl implements IGovdocPush {
 						if ("0".equals(flag)) {
 							//TODO 根据返回结果，调用OCIP签收接口
 							String groupId = params.get("groupId");
-							String title = params.get("subject");
+							String title = params.get("title");
 							String detailId = params.get("detailId");
 							String exchNo = params.get("exchNo");
 							Map<String, Object> paramMap = new HashMap<String, Object>();

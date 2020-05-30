@@ -143,19 +143,22 @@ public class EdocOFCExchangeHandler implements IBussinessHandler {
 					Address address = recOrganization.getIdentification();
 					String redId = address.getId();
 					String type = address.getType();
+					//String name = address.getName();
+					//System.out.println("收文单位：name:" + name + "|redId:" + redId + "|type:" + type);
 					if (IConstant.AddressType.account.name().equals(type)) {
 						OrgUnit localAccount = organizationManager.getLocalAccount(redId);
 						if (localAccount != null) {
 							// 获取到本地单位的单位id
 							String localAccountId = localAccount.getObjectId();
+							//System.out.println("localAccountId:" + localAccountId);
 							/**
 							 * 筛选出属于本系统的单位数据 注意：在第三方系统接入时，
 							 * 应该是拿到localAccountId在第三方系统的数据库查询改单位是否属于本系统
 							 */
-							if (OCIPServicesServlet.sendOrgLocalId.equals(localAccountId)) {// 在detailIds中筛选出属于本单位的myDetail值
+							//if (OCIPServicesServlet.sendOrgLocalId.equals(localAccountId)) {// 在detailIds中筛选出属于本单位的myDetail值
 								Long myDetail = detailIds.get(Long.valueOf(redId));// 该myDetail需要保存下来，在签收、回退公文时会用到
 								myDetailMap.put(Long.valueOf(localAccountId), myDetail);
-							}
+							//}
 						}
 					} else if (IConstant.AddressType.department.name().equals(type)) {
 						OrgDepartment localDepartment = organizationManager.getLocalDepartment(redId);

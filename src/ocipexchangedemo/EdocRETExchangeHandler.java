@@ -14,6 +14,7 @@ import com.seeyon.ocip.common.org.OcipOrgMember;
 import com.seeyon.ocip.common.org.OcipOrgRelation;
 import com.seeyon.ocip.common.org.OcipOrgUnit;
 import com.seeyon.ocip.common.organization.IOrganizationManager;
+import com.seeyon.ocip.common.utils.LogUtils;
 import com.seeyon.ocip.exchange.api.IBussinessHandler;
 import com.seeyon.ocip.exchange.exceptions.BussinessException;
 import com.seeyon.ocip.exchange.model.BIZContentType;
@@ -194,6 +195,7 @@ public class EdocRETExchangeHandler implements IBussinessHandler{
 			if(comment != null && !comment.isEmpty()){
 				retEdocObject.setOpinion(comment);
 			}
+			LogUtils.info(EdocRETExchangeHandler.class, "签收公文：groupId：" + groupId + "|detailId:" + detailId + "|exchNo:" + exchNo + "|name:" + name + "|id:" + id);
 		}
 		
 		//撤销公文
