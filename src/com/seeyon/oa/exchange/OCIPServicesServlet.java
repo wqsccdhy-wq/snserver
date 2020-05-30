@@ -33,7 +33,7 @@ import ocipexchangedemo.GovdocPushImpl;
 public class OCIPServicesServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 3670842542658827130L;
-	private static final String rootID = "-4730833917433371643";
+	public static final String rootID = "-4730833917433371643";
 	private static final String rootName = "遂宁市";
 	public static String sendOrgName = "遂宁市生态环境局";
 	public static String sendOrgLocalId = "4556842553182555622";
