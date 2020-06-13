@@ -97,6 +97,7 @@
 	<!-- 公文回执组件初始化，公文签收、回退、撤销动作 -->
 	<bean id="edocRETExchangeHandler" class="ocipexchangedemo.EdocRETExchangeHandler">
 		<property name="organizationManager" ref="organizationManager"></property>
+		<property name="govdocPush" ref="govdocPush"></property>
 	</bean>
 	
 </beans>
